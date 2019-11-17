@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "559632798417",
+    "firebase_url": "https://workwiz-a42f6.firebaseio.com",
+    "project_id": "workwiz-a42f6",
+    "storage_bucket": "workwiz-a42f6.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:559632798417:android:34f2433232f157a0",
+        "android_client_info": {
+          "package_name": "com.example.workwiz"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "559632798417-u0pdpj8a48gf61259o58dds2ohuvjihe.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.workwiz",
+            "certificate_hash": "c78ed93387763efcf61c0b6555d2d1fec1d95176"
+          }
+        },
+        {
+          "client_id": "559632798417-e6qqctkd41o2f3q63vjd076pclteo1qh.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDUI0zYJz2JtKQQ3Y92W2hF21X7YIyP84E"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "559632798417-e6qqctkd41o2f3q63vjd076pclteo1qh.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

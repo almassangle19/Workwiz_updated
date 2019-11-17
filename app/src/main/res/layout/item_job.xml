@@ -1,0 +1,89 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="?attr/selectableItemBackground"
+    android:backgroundTint="@color/colorAccent"
+    android:orientation="vertical"
+    android:padding="8dp">
+
+    <TextView
+        android:id="@+id/job_item_name"
+        style="@style/AppTheme.Subheader"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="8dp"
+        android:layout_marginTop="-2dp"
+        android:layout_marginRight="270dp"
+        android:layout_marginBottom="4dp"
+        android:layout_toLeftOf="@+id/job_item_salary"
+        android:ellipsize="end"
+        android:maxLines="1"
+        tools:text="DSC VIT Pune" />
+
+    <TextView
+        android:id="@+id/job_item_category"
+        style="@style/AppTheme.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/job_item_rating"
+        android:layout_alignLeft="@+id/job_item_name"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="4dp"
+        android:textColor="@color/greySecondary"
+        tools:text="Android Development" />
+
+    <TextView
+        android:id="@+id/restaurant_item_num_ratings"
+        style="@style/AppTheme.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/job_item_rating"
+        android:layout_alignBottom="@+id/job_item_rating"
+        android:layout_marginLeft="4dp"
+        android:layout_marginTop="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_toRightOf="@+id/job_item_rating"
+        android:gravity="center_vertical"
+        android:textColor="@color/greyDisabled"
+        tools:text="(10)" />
+
+    <me.zhanghai.android.materialratingbar.MaterialRatingBar
+        android:id="@+id/job_item_rating"
+        style="@style/Widget.MaterialRatingBar.RatingBar.Indicator.Small"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/job_item_name"
+        android:layout_alignLeft="@+id/job_item_name"
+        android:layout_marginLeft="0dp"
+        android:layout_marginTop="5dp"
+        android:layout_marginBottom="4dp" />
+
+    <TextView
+        android:id="@+id/job_item_city"
+        style="@style/AppTheme.TextDivider"
+        android:layout_alignTop="@+id/job_item_category"
+        android:layout_toRightOf="@+id/job_item_category"
+        android:text="@string/divider_bullet" />
+
+    <TextView
+        android:id="@+id/restaurant_item_city"
+        style="@style/AppTheme.Body1"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/job_item_category"
+        android:layout_toRightOf="@+id/job_item_city"
+        android:textColor="@color/greySecondary"
+        tools:text="Pune" />
+
+    <TextView
+        android:id="@+id/job_item_salary"
+        style="@style/AppTheme.Caption"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentRight="true"
+        android:textColor="@color/greySecondary"
+        tools:text="$$$" />
+
+</RelativeLayout>
