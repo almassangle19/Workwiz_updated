@@ -1,9 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    android:layout_width="match_parent"
+<ScrollView android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    xmlns:android="http://schemas.android.com/apk/res/android">
 
 
 
@@ -12,18 +13,6 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical">
-
-        <androidx.appcompat.widget.Toolbar
-            android:id="@+id/toolbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="?attr/colorPrimary"
-            android:theme="@style/AppTheme"
-            app:popupTheme="@style/Theme.AppCompat.Light.DarkActionBar"
-            app:title="@string/app_name"
-            app:titleMarginStart="24dp"
-            app:titleTextColor="@android:color/white" />
-
 
 
         <LinearLayout
@@ -114,30 +103,15 @@
                 android:id="@+id/addExperience"/>
 
 
-            <androidx.cardview.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view1"
-                android:layout_gravity="center"
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_marginTop="15dp"
+                android:id="@+id/recycler_experience"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                card_view:cardCornerRadius="4dp"
-                android:layout_below="@+id/addExperience">
+                android:layout_below="@+id/addExperience"
+                android:background="@android:color/white"
+                tools:listitem="@layout/list_experience" />
 
-
-                <ListView
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/lightblack"
-                    android:id="@+id/listExperience"
-                    android:divider="@color/graylight"
-                    android:dividerHeight="1dp"
-                    android:listSelector="@color/graylight"/>
-
-
-
-            </androidx.cardview.widget.CardView>
 
 
             <TextView
@@ -145,35 +119,25 @@
                 android:layout_height="wrap_content"
                 android:text="+Add Skills"
                 android:textSize="18sp"
-                android:layout_below="@+id/card_view1"
+                android:layout_below="@+id/recycler_experience"
                 android:textColor="@color/black"
                 android:id="@+id/addSkills"/>
 
-            <androidx.cardview.widget.CardView
-                xmlns:card_view="http://schemas.android.com/apk/res-auto"
-                android:id="@+id/card_view2"
-                android:layout_gravity="center"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                card_view:cardCornerRadius="4dp"
-                android:layout_below="@+id/addSkills">
 
-
-                <ListView
+                <androidx.recyclerview.widget.RecyclerView
+                    android:layout_marginTop="15dp"
+                    android:id="@+id/recycler_skills"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:paddingTop="5dp"
-                    android:paddingBottom="5dp"
-                    android:textColor="@color/lightblack"
-                    android:id="@+id/listSkills"
-                    android:divider="@color/graylight"
-                    android:dividerHeight="1dp"
-                    android:listSelector="@color/graylight"/>
-            </androidx.cardview.widget.CardView>
+                    android:layout_below="@+id/addSkills"
+                    android:background="@android:color/white"
+                    tools:listitem="@layout/item_skills" />
+
 
 
         </RelativeLayout>
 
 
     </LinearLayout>
+
 </ScrollView>

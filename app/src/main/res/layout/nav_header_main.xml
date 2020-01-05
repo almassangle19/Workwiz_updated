@@ -21,8 +21,9 @@
         android:id="@+id/nav_profile"
         android:scaleType="centerCrop"
         android:background="@drawable/ic_user"
-        android:layout_marginRight="80dp"
-        android:paddingTop="8dp"/>
+        android:layout_marginRight="80dp" />
+
+
     <TextView
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

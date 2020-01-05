@@ -13,14 +13,21 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.example.workwiz.R;
@@ -30,6 +37,7 @@ import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
+import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.UserProfileChangeRequest;
@@ -45,6 +53,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.StorageTask;
 import com.google.firebase.storage.UploadTask;
+
 
 import java.io.IOException;
 import java.util.ArrayList;
@@ -73,6 +82,10 @@ public class MyProfileFragment extends Fragment {
     TextView addExperience, addSkills, tvExperience, tvSkills;
    // public static String name, email, phoneNo;
     List<String>list = new ArrayList<String>();
+    RecyclerView recyclerView;
+    SkillAdapter adapter;
+    List<SkillsList>skillsList;
+    String list_skills;
 
 
     public static final String COLLECTION_NAME_KEY = "Users";
@@ -82,6 +95,9 @@ public class MyProfileFragment extends Fragment {
     private CollectionReference collectionReference;
     private boolean executed;
 
+    private Toolbar mToolbar;
+    private DrawerLayout drawer;
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -90,6 +106,10 @@ public class MyProfileFragment extends Fragment {
     /*    LayoutInflater inflater = (LayoutInflater) this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
         View contentView = inflater.inflate(R.layout.fragment_profile,null,false);
         drawer.addView(contentView,0);*/
+       //  mToolbar = view.findViewById(R.id.toolbar1);
+        //((AppCompatActivity)getActivity()).setSupportActionBar(mToolbar);
+
+        //((AppCompatActivity)getActivity()).getSupportActionBar().setHomeAsUpIndicator(R.drawable.ic_menu_black_24dp);
         tvEmail = view.findViewById(R.id.tvEmail);
         //tvPhone = view.findViewById(R.id.tvPhn);
         tvName = view.findViewById(R.id.tvName);
@@ -102,6 +122,10 @@ public class MyProfileFragment extends Fragment {
         myDialog = new Dialog(getActivity());
         addExperience = view.findViewById(R.id.addExperience);
         addSkills = view.findViewById(R.id.addSkills);
+        skillsList = new ArrayList<>();
+        recyclerView = view.findViewById(R.id.recycler_skills);
+        recyclerView.setHasFixedSize(true);
+        recyclerView.setLayoutManager(new LinearLayoutManager(view.getContext()));
       /*  Toolbar toolbar = getView().findViewById(R.id.toolbar);
 
         DrawerLayout drawer =getView().findViewById(R.id.drawer_layout);
@@ -120,6 +144,7 @@ public class MyProfileFragment extends Fragment {
         });
         ((AppCompatActivity)getActivity()).getSupportActionBar();
         loadUserInfo();
+        getSkills();
        /* addExperience.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -135,10 +160,15 @@ public class MyProfileFragment extends Fragment {
             public void onClick(View v) {
 
                 Intent i = new Intent(getActivity(), Skills.class);
+                i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
                 startActivity(i);
+                getActivity().finish();
+
 
             }
         });
+
+
         return view;
 
 
@@ -149,7 +179,7 @@ public class MyProfileFragment extends Fragment {
     public void onStart() {
         super.onStart();
 
-        /*DocumentReference docRef = db.collection(COLLECTION_NAME_KEY).document(user.getUid());
+      /*  DocumentReference docRef = db.collection(COLLECTION_NAME_KEY).document(user.getUid());
         docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
             @Override
             public void onComplete(@NonNull Task<DocumentSnapshot> task) {
@@ -186,10 +216,13 @@ public class MyProfileFragment extends Fragment {
         }
 
 
-        getSkills();
+
 
 
     }
+
+
+
 
     private void loadUserInfo() {
 
@@ -297,7 +330,7 @@ public class MyProfileFragment extends Fragment {
 
     }
 
-    private void showImageChooser() {
+    private void showImageChooser() { List<Skills>skillsList;
 
         Intent intent = new Intent();
         intent.setType("image/*");
@@ -339,18 +372,24 @@ public class MyProfileFragment extends Fragment {
 
     }
 
+
+
     private void getSkills() {
-        DocumentReference docRef = db.collection(COLLECTION_NAME_KEY).document(user.getUid()).collection("Skills").document(user.getUid());
+       // DocumentReference docRef = db.collection(COLLECTION_NAME_KEY).document(user.getUid()).collection("Skills").document(user.getUid());
+
+        skillsList.clear();
 
         db.collection(COLLECTION_NAME_KEY).document(user.getUid()).collection("Skills").addSnapshotListener(new EventListener<QuerySnapshot>() {
             @Override
             public void onEvent(@javax.annotation.Nullable QuerySnapshot queryDocumentSnapshots, @javax.annotation.Nullable FirebaseFirestoreException e) {
                 for (DocumentSnapshot documentSnapshot:queryDocumentSnapshots){
-                    list.add((documentSnapshot.get("skill")).toString());
+                    list_skills = documentSnapshot.get("skill").toString();
+                    skillsList.add(new SkillsList(list_skills));
+
                 }
-                ArrayAdapter<String>adapter = new ArrayAdapter<String>(getActivity(),android.R.layout.simple_selectable_list_item,list);
-                ListView listView = getView().findViewById(R.id.listSkills);
-                listView.setAdapter(adapter);
+
+                adapter = new SkillAdapter(getActivity(),skillsList);
+                recyclerView.setAdapter(adapter);
             }
         });
 

@@ -13,9 +13,9 @@
             android:title= "My Profile" />
 
         <item
-            android:id="@+id/nav_feedback"
+            android:id="@+id/nav_post_jobs"
             android:icon="@drawable/feedback"
-            android:title="Feedback"/>
+            android:title="Post Jobs"/>
 
         <item
             android:id="@+id/nav_logout"

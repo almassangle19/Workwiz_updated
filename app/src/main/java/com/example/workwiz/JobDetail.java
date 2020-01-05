@@ -34,7 +34,7 @@ import com.google.firebase.firestore.Transaction;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
-public abstract class JobDetail extends AppCompatActivity implements
+public  class JobDetail extends AppCompatActivity implements
         View.OnClickListener,
         EventListener<DocumentSnapshot>,
         RatingDialogFragment.RatingListener {

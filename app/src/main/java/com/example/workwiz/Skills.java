@@ -6,6 +6,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.FrameLayout;
 import android.widget.Spinner;
 import android.widget.Toast;
 
@@ -13,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.google.android.gms.tasks.OnFailureListener;
@@ -39,6 +41,8 @@ public class Skills extends AppCompatActivity {
     FirebaseUser user;
     String skill;
     Fragment fragment;
+    FragmentManager fragmentManager;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,12 +53,14 @@ public class Skills extends AppCompatActivity {
         btnAdd = findViewById(R.id.btnAdd);
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
+        fragmentManager = getSupportFragmentManager();
         user = mAuth.getCurrentUser();
         final List<String> skills = new ArrayList<String>();
         skills.add("Select Skills");
         skills.add("Android Development");
         skills.add("Data Scientist");
         skills.add("Web development");
+
 
 
         ArrayAdapter<String> arrayAdapter = new ArrayAdapter<String>(this,android.R.layout.simple_spinner_item,skills);
@@ -71,7 +77,18 @@ public class Skills extends AppCompatActivity {
             public void onNothingSelected(AdapterView<?> parent) {
 
             }
+
+
         });
+
+       /* skills.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
+                String value = (String) adapterView.getItemAtPosition(i);
+                arrayAdapter.remove(value);
+                arrayAdapter.notifyDataSetChanged();
+            }
+        });*/
 
         btnAdd.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -87,7 +104,10 @@ public class Skills extends AppCompatActivity {
 
 
                                 Toast.makeText(Skills.this, "Updated", Toast.LENGTH_SHORT).show();
-                                fragment = new MyProfileFragment();
+                               fragment = new MyProfileFragment();
+                                FrameLayout frame = findViewById(R.id.frame1);
+                                frame.removeAllViews();
+                                fragmentManager.popBackStack("skills",FragmentManager.POP_BACK_STACK_INCLUSIVE);
                                 FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
                                 ft.replace(R.id.frame1,fragment);
                                 ft.commit();

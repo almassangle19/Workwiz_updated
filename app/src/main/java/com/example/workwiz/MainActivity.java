@@ -1,11 +1,13 @@
 package com.example.workwiz;
 
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 import androidx.lifecycle.ViewModelProviders;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -13,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.res.Configuration;
 import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
@@ -40,12 +43,10 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.util.Collections;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
-        View.OnClickListener,
-        FilterDialogFragment.FilterListener,
-        com.example.workwiz.adapter.JobAdapter.OnRestaurantSelectedListener,
-        NavigationView.OnNavigationItemSelectedListener {
+        NavigationView.OnNavigationItemSelectedListener, FragmentActionListener{
 
     private static final String TAG = "MainActivity";
 
@@ -66,226 +67,82 @@ public class MainActivity extends AppCompatActivity implements
     private com.example.workwiz.adapter.JobAdapter mAdapter;
 
     private MainActivityViewModel mViewModel;
+    private FragmentManager fragmentManager;
     private DrawerLayout drawer;
     private FirebaseAuth mAuth;
     Fragment fragment = null;
     ImageView profile;
+    ActionBarDrawerToggle toggle;
 
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
-
-
+        setContentView(R.layout.activity_home);
         mToolbar = findViewById(R.id.toolbar);
         setSupportActionBar(mToolbar);
 
-        mCurrentSearchView = findViewById(R.id.text_current_search);
-        mCurrentSortByView = findViewById(R.id.text_current_sort_by);
-        mJobsRecycler = findViewById(R.id.recycler_jobs);
-        mEmptyView = findViewById(R.id.view_empty);
 
-        mAuth = FirebaseAuth.getInstance();
-        findViewById(R.id.filter_bar).setOnClickListener(this);
-        findViewById(R.id.button_clear_filter).setOnClickListener(this);
-
-        // View model
-        mViewModel = ViewModelProviders.of(this).get(MainActivityViewModel.class);
-
-        // Enable Firestore logging
-        FirebaseFirestore.setLoggingEnabled(true);
-
-        // Initialize Firestore and the main RecyclerView
-        initFirestore();
-        initRecyclerView();
-
-        // Filter Dialog
-        mFilterDialog = new FilterDialogFragment();
-
+        fragmentManager = getSupportFragmentManager();
+        setHomeFragment();
         drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
+        toggle = new ActionBarDrawerToggle(
                 this, drawer, mToolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
+
         navigationView.setNavigationItemSelectedListener(this);
+        updateNavHeader();
 
+
+
+
+
+
+    }
+
+    private void updateNavHeader() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
         View headerView = navigationView.getHeaderView(0);
-        profile = headerView.findViewById(R.id.nav_profile);
-
-
-    }
-
-
-
-
-
-    private void initFirestore() {
-        // TODO(developer): Implement
-        mFirestore = FirebaseFirestore.getInstance();
-
-        //Get the 50 highest rated jobs
-        mQuery = mFirestore.collection("jobs")                     //CHANGE NAME TO JOBS
-                .orderBy("avgRating", Query.Direction.DESCENDING)
-                .limit(LIMIT);
-    }
-
-    private void initRecyclerView() {
-        if (mQuery == null) {
-            Log.w(TAG, "No query, not initializing RecyclerView");
-        }
-
-        mAdapter = new com.example.workwiz.adapter.JobAdapter(mQuery, this) {
-
-            @Override
-            protected void onDataChanged() {
-                // Show/hide content if the query returns empty.
-                if (getItemCount() == 0) {
-                    mJobsRecycler.setVisibility(View.GONE);
-                    mEmptyView.setVisibility(View.VISIBLE);
-                } else {
-                    mJobsRecycler.setVisibility(View.VISIBLE);
-                    mEmptyView.setVisibility(View.GONE);
-                }
-            }
-
-            @Override
-            protected void onError(FirebaseFirestoreException e) {
-                // Show a snackbar on errors
-                Snackbar.make(findViewById(android.R.id.content),
-                        "Error: check logs for info.", Snackbar.LENGTH_LONG).show();
-            }
-        };
-
-        mJobsRecycler.setLayoutManager(new LinearLayoutManager(this));
-        mJobsRecycler.setAdapter(mAdapter);
-    }
-
-    @Override
-    public void onStart() {
-        super.onStart();
-
-        // Start sign in if necessary
-        if (shouldStartSignIn()) {
-            startSignIn();
-            return;
-        }
-
-        // Apply filters
-        onFilter(mViewModel.getFilters());
-
-        // Start listening for Firestore updates
-        if (mAdapter != null) {
-            mAdapter.startListening();
-        }
-
         FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
         if (user != null)
         {
-            final TextView name = findViewById(R.id.nav_name);
-            final TextView email = findViewById(R.id.nav_email);
+            profile = headerView.findViewById(R.id.nav_profile);
+            final TextView name = headerView.findViewById(R.id.nav_name);
+            final TextView email = headerView.findViewById(R.id.nav_email);
             name.setText(user.getDisplayName());
             email.setText(user.getEmail());
         }
 
-
         if (user.getPhotoUrl() != null) {
-            Glide.with(MainActivity.this)
+            Glide.with(this)
                     .load(user.getPhotoUrl())
                     .centerCrop()
                     .into(profile);
         }
     }
 
-    @Override
-    public void onStop() {
-        super.onStop();
-        if (mAdapter != null) {
-            mAdapter.stopListening();
-        }
+    private void setHomeFragment() {
+
+       // getSupportActionBar().setTitle("Workwiz");
+        HomeFragment homeFragment = new HomeFragment();
+        homeFragment.setFragmentActionListener(this::actionPerformed);
+        fragmentManager.popBackStack("home",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+        fragmentManager.beginTransaction().replace(R.id.frame,homeFragment).commit();
     }
 
-    private void onAddItemsClicked() {
-        // TODO(developer): Add random jobs
-        //showTodoToast();
-        //Get a reference to the jobs collection
-        CollectionReference jobs = mFirestore.collection("jobs");   //CHANGE NAME TO JOBS
-
-        for(int i = 0; i < 10; i++){
-            //Get a random job POJO
-            Job job = JobUtil.getRandom(this);
-
-            //Add a new document to the jobs collection
-            jobs.add(job);
-        }//for
-    }
 
     @Override
-    public void onFilter(Filters filters) {
-        // TODO(developer): Construct new query
-        //showTodoToast();
-        // Construct query basic query
-        Query query = mFirestore.collection("jobs");             //CHANGE NAME TO JOBS
+    public void onStart() {
+        super.onStart();
 
-        // Category (equality filter)
-        if (filters.hasCategory()) {
-            query = query.whereEqualTo("category", filters.getCategory());
-        }
 
-        // City (equality filter)
-        if (filters.hasCity()) {
-            query = query.whereEqualTo("city", filters.getCity());
-        }
 
-        // Price (equality filter)
-        if (filters.hasPrice()) {
-            query = query.whereEqualTo("price", filters.getPrice());
-        }
-
-        // Sort by (orderBy with direction)
-        if (filters.hasSortBy()) {
-            query = query.orderBy(filters.getSortBy(), filters.getSortDirection());
-        }
-
-        // Limit items
-        query = query.limit(LIMIT);
-
-        // Update the query
-        mQuery = query;
-        mAdapter.setQuery(query);
-
-        // Set header
-        mCurrentSearchView.setText(Html.fromHtml(filters.getSearchDescription(this)));
-        mCurrentSortByView.setText(filters.getOrderDescription(this));
-
-        // Save filters
-        mViewModel.setFilters(filters);
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        getMenuInflater().inflate(R.menu.menu_main, menu);
-        return super.onCreateOptionsMenu(menu);
-    }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.menu_add_items:
-                onAddItemsClicked();
-                break;
-            case R.id.menu_sign_out:
-                AuthUI.getInstance().signOut(this);
-                startSignIn();
-                break;
-            case R.id.job_post:
-                Intent intent = new Intent(MainActivity.this,JobPost.class);
-                startActivity(intent);
 
-        }
-        return super.onOptionsItemSelected(item);
-    }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -299,36 +156,7 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
-    @Override
-    public void onClick(View v) {
-        switch (v.getId()) {
-            case R.id.filter_bar:
-                onFilterClicked();
-                break;
-            case R.id.button_clear_filter:
-                onClearFilterClicked();
-        }
-    }
 
-    public void onFilterClicked() {
-        // Show the dialog containing filter options
-        mFilterDialog.show(getSupportFragmentManager(), FilterDialogFragment.TAG);
-    }
-
-    public void onClearFilterClicked() {
-        mFilterDialog.resetFilters();
-
-        onFilter(Filters.getDefault());
-    }
-
-    @Override
-    public void onJobSelected(DocumentSnapshot restaurant) {
-        // Go to the details page for the selected restaurant
-        Intent intent = new Intent(this, JobDetail.class);
-        intent.putExtra(JobDetail.KEY_JOB_ID, restaurant.getId());
-
-        startActivity(intent);
-    }
 
     private boolean shouldStartSignIn() {
         return (!mViewModel.getIsSigningIn() && FirebaseAuth.getInstance().getCurrentUser() == null);
@@ -354,6 +182,18 @@ public class MainActivity extends AppCompatActivity implements
     }
 
     @Override
+    protected void onPostCreate(@Nullable Bundle savedInstanceState) {
+        super.onPostCreate(savedInstanceState);
+        toggle.syncState();
+    }
+
+    @Override
+    public void onConfigurationChanged(Configuration newConfig) {
+        super.onConfigurationChanged(newConfig);
+        toggle.onConfigurationChanged(newConfig);
+    }
+
+    @Override
     public void onBackPressed() {
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         if (drawer.isDrawerOpen(GravityCompat.START)) {
@@ -363,6 +203,9 @@ public class MainActivity extends AppCompatActivity implements
         }
     }
 
+
+
+
     @Override
     public boolean onNavigationItemSelected(MenuItem item) {
 
@@ -370,31 +213,32 @@ public class MainActivity extends AppCompatActivity implements
 
         int id = item.getItemId();
         //TODO: rewite FindJobFragment and MyProfileFragment
-      /*  if (id == R.id.nav_home){
-            //fragment = new JobDetailFragment();
-        }*/
+        if (id == R.id.nav_home){
+
+            setHomeFragment();
+            updateNavHeader();
+
+        }
         if (id == R.id.nav_profile) {
             fragment = new MyProfileFragment();
+
         }
-        if (id == R.id.nav_feedback){
-            fragment = new FeedbackFragment();
+        if (id == R.id.nav_post_jobs){
+            fragment = new JobPostFragment();
         }
         if (id == R.id.nav_logout){
             //TODO: fix these after the fragments have been added
-            AuthUI.getInstance().signOut(this);
-            startSignIn();
-          /*  AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(MainActivity.this);
             builder.setMessage("Are you sure you want to logout?");
             builder.setPositiveButton("Ok", (dialog, id1) -> {
 
-                mAuth.signOut();
-                Intent intent = new Intent(getApplicationContext(),SignUpActivity.class);
-                startActivity(intent);
-                finish();
+                AuthUI.getInstance().signOut(this);
+                startSignIn();
             });
             builder.setNegativeButton("Cancel", (dialog, id12) -> dialog.dismiss());
             AlertDialog dialog = builder.create();
-            dialog.show();*/
+            dialog.show();
         }
         if (fragment!=null)
         {
@@ -403,7 +247,7 @@ public class MainActivity extends AppCompatActivity implements
             FrameLayout frame = findViewById(R.id.frame);
             frame.removeAllViews();
             FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-            ft.add(R.id.frame,fragment);
+            ft.replace(R.id.frame,fragment);
             ft.commit();
         }
         /* else if (id == R.id.activeJobs) {
@@ -431,6 +275,19 @@ public class MainActivity extends AppCompatActivity implements
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+
+    @Override
+    public Void actionPerformed(Bundle bundle) {
+        int action = bundle.getInt(FragmentActionListener.ACTION_KEY);
+        switch (action){
+            case FragmentActionListener.ACTION_VALUE_BACK_TO_HOME:
+                setHomeFragment();
+                break;
+        }
+
+        return null;
     }
 }
 
