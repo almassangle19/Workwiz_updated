@@ -55,12 +55,23 @@ public class Skills extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         fragmentManager = getSupportFragmentManager();
+        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+            @Override
+            public void onBackStackChanged() {
+                if (getFragmentManager().getBackStackEntryCount() == 0)
+                {
+                    finish();
+                }
+            }
+        });
         user = mAuth.getCurrentUser();
         final List<String> skills = new ArrayList<String>();
         skills.add("Select Skills");
-        skills.add("Android Development");
-        skills.add("Data Scientist");
-        skills.add("Web development");
+        skills.add("Cleaning");
+        skills.add("Carpentry");
+        skills.add("Car Washing");
+        skills.add("Cooking");
+
 
 
 
@@ -108,13 +119,13 @@ public class Skills extends AppCompatActivity {
 
                                 Toast.makeText(Skills.this, "Updated", Toast.LENGTH_SHORT).show();
 
-                                FrameLayout frame = findViewById(R.id.frame1);
+                            //    FrameLayout frame = findViewById(R.id.frame1);
                               //  frame.removeAllViews();
-                                fragment = new MyProfileFragment();
+                               // fragment = new MyProfileFragment();
                                // fragmentManager.popBackStack("skills",FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                               // FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.frame1,fragment);
+                            //  FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.frame1,fragment);
                                 //  ft.replace(R.id.frame1,fragment);
-                                //  ft.addToBackStack(null);
+                              //    ft.addToBackStack(null);
                                // ft.commit();
 
 

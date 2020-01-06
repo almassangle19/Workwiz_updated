@@ -37,7 +37,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.mName.setText(job.getName());
         holder.mCity.setText(job.getCity());
         holder.mCategory.setText(job.getCategory());
-        holder.mPrice.setText(JobUtil.getPriceString(job));
+        holder.mPrice.setText(job.getPrice());
 
     }
 

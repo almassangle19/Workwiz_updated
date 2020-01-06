@@ -113,7 +113,7 @@ public class JobPostFragment extends Fragment {
                     category = document.get("category").toString();
                     city= document.get("city").toString();
                     price = document.get("price").toString();
-                    jobsArrayList.add(new Job(name,city,category,"",Integer.parseInt(price),0,0));
+                  //  jobsArrayList.add(new Job(name,city,category,"",price,0,0));
 
 
                 }
@@ -140,6 +140,10 @@ public class JobPostFragment extends Fragment {
         data1.put("category",category);
         data1.put("city",city);
         data1.put("price",price);
+        data1.put("avgRating",0);
+        data1.put("numRating",0);
+        data1.put("photo",null);
+
         db.collection("jobs").document(user.getUid())
                 .set(data1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {

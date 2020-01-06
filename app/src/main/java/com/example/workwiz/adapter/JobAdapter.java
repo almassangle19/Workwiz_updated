@@ -79,7 +79,7 @@ public class JobAdapter extends com.example.workwiz.adapter.FirestoreAdapter<Job
             categoryView.setText(job.getCategory());
             numRatingsView.setText(resources.getString(R.string.fmt_num_ratings,
                     job.getNumRatings()));
-            priceView.setText(JobUtil.getPriceString(job));
+            priceView.setText(job.getPrice());
 
             // Click listener
             itemView.setOnClickListener(new View.OnClickListener() {

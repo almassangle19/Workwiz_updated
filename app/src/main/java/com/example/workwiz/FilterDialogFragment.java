@@ -111,9 +111,9 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
         }
     }
 
-    private int getSelectedPrice() {
+    private String getSelectedPrice() {
         String selected = (String) mPriceSpinner.getSelectedItem();
-        if (selected.equals(getString(R.string.price_1))) {
+      /*  if (selected.equals(getString(R.string.price_1))) {
             return 1;
         } else if (selected.equals(getString(R.string.price_2))) {
             return 2;
@@ -121,7 +121,13 @@ public class FilterDialogFragment extends DialogFragment implements View.OnClick
             return 3;
         } else {
             return -1;
+        }*/
+        if (getString(R.string.value_any_price).equals(selected)) {
+            return null;
+        } else {
+            return selected;
         }
+
     }
 
     @Nullable
