@@ -41,6 +41,7 @@ import com.google.firebase.firestore.QuerySnapshot;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import static com.example.workwiz.MyProfileFragment.COLLECTION_NAME_KEY;
@@ -51,10 +52,13 @@ public class JobPostFragment extends Fragment {
     private Button mAddBtn;
     FirebaseUser user;
     String jobs;
+    String name, category, city, price;
 
     //firebase firestore
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
-
+    private RecyclerView mRecyclerView;
+    private CustomAdapter adapter;
+    private ArrayList<Job> jobsArrayList = new ArrayList<>();
     //vars
 
     private static final String TAG = "MainActivity";
@@ -72,6 +76,7 @@ public class JobPostFragment extends Fragment {
         mCategory = view.findViewById(R.id.etcategory);
         mPrice = view.findViewById(R.id.etprice);
         user = FirebaseAuth.getInstance().getCurrentUser();
+        mRecyclerView = view.findViewById(R.id.recycler_view);
         mAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -79,13 +84,48 @@ public class JobPostFragment extends Fragment {
             }
         });
 
-
+//        setupRecyclerView();
 
 
         return view;
 
     }
 
+
+
+
+
+
+
+    private void setupRecyclerView()
+    {
+
+
+        DocumentReference docRef = db.collection("jobs").document(user.getUid());
+
+        docRef.get().addOnCompleteListener(new OnCompleteListener<DocumentSnapshot>() {
+            @Override
+            public void onComplete(@NonNull Task<DocumentSnapshot> task) {
+                if (task.isSuccessful()) {
+                    DocumentSnapshot document = task.getResult();
+                    document.getData();
+                    name = document.get("name").toString();
+                    category = document.get("category").toString();
+                    city= document.get("city").toString();
+                    price = document.get("price").toString();
+                    jobsArrayList.add(new Job(name,city,category,"",Integer.parseInt(price),0,0));
+
+
+                }
+            }
+        });
+
+        adapter = new CustomAdapter(jobsArrayList , getContext());
+        mRecyclerView.setAdapter(adapter);
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(getContext()));
+
+
+    }
 
 
     private void addToDatabase() {
@@ -95,25 +135,33 @@ public class JobPostFragment extends Fragment {
         String city = mCity.getText().toString().trim();
         String price = mPrice.getText().toString().trim();
 
-        //check that fields are not empty
-        if (!name.equals("") && !category.equals("") && !city.equals("") && !price.equals("")) {
-            Job jobs = new Job(name, city, category, "", Integer.parseInt(price), 0, 0);
-            db.collection("jobs").add(jobs).addOnSuccessListener(
-                    new OnSuccessListener<DocumentReference>() {
-                        @Override
-                        public void onSuccess(DocumentReference documentReference) {
-                            Log.d(TAG, "onSuccess: Added successfully");
-                            Toast.makeText(getContext(), "Added", Toast.LENGTH_SHORT).show();
-                        }
+        Map<String,Object> data1 = new HashMap<>();
+        data1.put("name",name);
+        data1.put("category",category);
+        data1.put("city",city);
+        data1.put("price",price);
+        db.collection("jobs").document(user.getUid())
+                .set(data1)
+                .addOnSuccessListener(new OnSuccessListener<Void>() {
+                    @Override
+                    public void onSuccess(Void aVoid) {
+
+
+                        Toast.makeText(getContext(), "Posted", Toast.LENGTH_SHORT).show();
+
+
                     }
-            ).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.e(TAG, "onFailure: ", e);
-                }
-            });
-        }
+                }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+
+                Toast.makeText(getContext(), "Error has occurred" + e.getMessage(), Toast.LENGTH_SHORT).show();
+
+            }
+        });
+
     }
+
 
     @Override
     public void onStart() {

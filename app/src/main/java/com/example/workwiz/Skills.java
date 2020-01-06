@@ -44,6 +44,7 @@ public class Skills extends AppCompatActivity {
     FragmentManager fragmentManager;
 
 
+
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -81,6 +82,8 @@ public class Skills extends AppCompatActivity {
 
         });
 
+
+
        /* skills.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int i, long l) {
@@ -104,13 +107,33 @@ public class Skills extends AppCompatActivity {
 
 
                                 Toast.makeText(Skills.this, "Updated", Toast.LENGTH_SHORT).show();
-                               fragment = new MyProfileFragment();
+
                                 FrameLayout frame = findViewById(R.id.frame1);
-                                frame.removeAllViews();
-                                fragmentManager.popBackStack("skills",FragmentManager.POP_BACK_STACK_INCLUSIVE);
-                                FragmentTransaction ft = getSupportFragmentManager().beginTransaction();
-                                ft.replace(R.id.frame1,fragment);
-                                ft.commit();
+                              //  frame.removeAllViews();
+                                fragment = new MyProfileFragment();
+                               // fragmentManager.popBackStack("skills",FragmentManager.POP_BACK_STACK_INCLUSIVE);
+                               // FragmentTransaction ft = getSupportFragmentManager().beginTransaction().replace(R.id.frame1,fragment);
+                                //  ft.replace(R.id.frame1,fragment);
+                                //  ft.addToBackStack(null);
+                               // ft.commit();
+
+
+
+                                //getFragmentManager().popBackStack();
+
+                              /*  if (getFragmentManager().getBackStackEntryCount()>0)
+                                {
+                                    getFragmentManager().popBackStack();
+                                    return;
+                                } if (getFragmentManager().getBackStackEntryCount()>0)
+                                {
+                                    getFragmentManager().popBackStack();
+                                    return;
+                                }
+                               /* Intent intent =  new Intent(Skills.this, MyProfileFragment.class);
+                                intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+                                startActivity(intent);
+                                finish();
                                /* Intent intent =  new Intent(Skills.this, MyProfileFragment.class);
                                 intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
                                 startActivity(intent);
