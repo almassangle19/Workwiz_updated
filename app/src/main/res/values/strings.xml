@@ -5,9 +5,9 @@
     <string name="value_any_city">Anywhere</string>
     <string name="value_any_price">Any price</string>
 
-    <string name="price_1">Low</string>
-    <string name="price_2">Medium</string>
-    <string name="price_3">High</string>
+    <string name="price_1">$</string>
+    <string name="price_2">$$</string>
+    <string name="price_3">$$$</string>
 
     <string name="fmt_num_ratings" translatable="false">(%d)</string>
     <string name="all_jobs">All Jobs</string>
@@ -40,13 +40,12 @@
     <string-array name="categories">
         <item>@string/value_any_category</item>
 
-        <item>House Cleaning</item>
-        <item>Luggage Pick Up</item>
-        <item>Rag Picker</item>
-        <item>Vehicle Pick UP</item>
-        <item>Brochure Distribution</item>
+        <item>Web</item>
+        <item>Android</item>
+        <item>Management</item>
+        <item>Machine Learning</item>
+        <item>Data Science</item>
     </string-array>
-    ite
 
     <!-- 50 most populous cities in the US -->
     <string-array name="cities">

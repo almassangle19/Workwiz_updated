@@ -113,7 +113,7 @@ public class JobPostFragment extends Fragment {
                     category = document.get("category").toString();
                     city= document.get("city").toString();
                     price = document.get("price").toString();
-                  //  jobsArrayList.add(new Job(name,city,category,"",price,0,0));
+                    jobsArrayList.add(new Job(name,city,category,"",Integer.parseInt(price),0,0));
 
 
                 }

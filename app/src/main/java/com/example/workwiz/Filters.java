@@ -10,7 +10,7 @@ public class Filters {
 
     private String category = null;
     private String city = null;
-    private String price = null;
+    private int price = -1;
     private String sortBy = null;
     private Query.Direction sortDirection = null;
 
@@ -33,7 +33,7 @@ public class Filters {
     }
 
     public boolean hasPrice() {
-        return (TextUtils.isEmpty(price));
+        return (price>0);
     }
 
     public boolean hasSortBy() {
@@ -56,11 +56,11 @@ public class Filters {
         this.city = city;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 
@@ -105,10 +105,10 @@ public class Filters {
             desc.append("</b>");
         }
 
-        if (price != null) {
+        if (price > 0) {
             desc.append(" for ");
             desc.append("<b>");
-            desc.append(price);
+            desc.append(JobUtil.getPriceString(price));
             desc.append("</b>");
         }
 

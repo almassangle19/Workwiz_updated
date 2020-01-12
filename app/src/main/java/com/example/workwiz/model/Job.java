@@ -16,14 +16,14 @@ public class Job {
     private String city;
     private String category;
     private String photo;
-    private String price;
+    private int price;
     private int numRatings;
     private double avgRating;
 
     public Job() {}
 
     public Job(String name, String city, String category, String photo,
-               String price, int numRatings, double avgRating) {
+               int price, int numRatings, double avgRating) {
         this.name = name;
         this.city = city;
         this.category = category;
@@ -64,11 +64,11 @@ public class Job {
         this.photo = photo;
     }
 
-    public String getPrice() {
+    public int getPrice() {
         return price;
     }
 
-    public void setPrice(String price) {
+    public void setPrice(int price) {
         this.price = price;
     }
 

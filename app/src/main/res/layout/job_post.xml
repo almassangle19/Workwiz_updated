@@ -31,7 +31,7 @@
         android:layout_height="wrap_content"/>
 
     <EditText
-        android:inputType="text"
+        android:inputType="number"
         android:id="@+id/etprice"
         android:hint="Price"
         android:layout_width="match_parent"
