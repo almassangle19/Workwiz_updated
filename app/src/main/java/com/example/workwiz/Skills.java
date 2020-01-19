@@ -55,22 +55,23 @@ public class Skills extends AppCompatActivity {
         db = FirebaseFirestore.getInstance();
         mAuth = FirebaseAuth.getInstance();
         fragmentManager = getSupportFragmentManager();
-        fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
-            @Override
+       // fragmentManager.addOnBackStackChangedListener(new FragmentManager.OnBackStackChangedListener() {
+         /*   @Override
             public void onBackStackChanged() {
                 if (getFragmentManager().getBackStackEntryCount() == 0)
                 {
                     finish();
                 }
             }
-        });
+        });*/
         user = mAuth.getCurrentUser();
+
         final List<String> skills = new ArrayList<String>();
         skills.add("Select Skills");
-        skills.add("Cleaning");
-        skills.add("Carpentry");
-        skills.add("Car Washing");
-        skills.add("Cooking");
+        skills.add("Machine Learning");
+        skills.add("Android Development");
+        skills.add("Web Development");
+        skills.add("Data Scientist");
 
 
 

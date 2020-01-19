@@ -144,7 +144,6 @@ public class MyProfileFragment extends Fragment {
         });
         ((AppCompatActivity)getActivity()).getSupportActionBar();
         loadUserInfo();
-        getSkills();
        /* addExperience.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -174,6 +173,11 @@ public class MyProfileFragment extends Fragment {
 
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        getSkills();
+    }
 
     @Override
     public void onStart() {

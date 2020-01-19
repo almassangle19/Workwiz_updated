@@ -51,7 +51,6 @@ public class JobPostFragment extends Fragment {
     private EditText mName, mCity, mCategory, mPrice;
     private Button mAddBtn;
     FirebaseUser user;
-    String jobs;
     String name, category, city, price;
 
     //firebase firestore
@@ -133,7 +132,7 @@ public class JobPostFragment extends Fragment {
         String name = mName.getText().toString().trim();
         String category = mCategory.getText().toString().trim();
         String city = mCity.getText().toString().trim();
-        String price = mPrice.getText().toString().trim();
+        int price =Integer.parseInt( mPrice.getText().toString().trim());
 
         Map<String,Object> data1 = new HashMap<>();
         data1.put("name",name);
