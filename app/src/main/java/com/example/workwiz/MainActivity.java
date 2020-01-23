@@ -20,7 +20,6 @@ import android.os.Bundle;
 import android.text.Html;
 import android.util.Log;
 import android.view.Menu;
-import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +32,7 @@ import com.bumptech.glide.Glide;
 import com.example.workwiz.util.JobUtil;
 import com.example.workwiz.viewModel.MainActivityViewModel;
 import com.firebase.ui.auth.AuthUI;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.auth.FirebaseAuth;
@@ -44,7 +44,6 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.util.Collections;
-import java.util.List;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
@@ -76,6 +75,7 @@ public class MainActivity extends AppCompatActivity implements
     Fragment fragment = null;
     ImageView profile;
     ActionBarDrawerToggle toggle;
+    FloatingActionButton fab;
 
 
 
@@ -109,7 +109,16 @@ public class MainActivity extends AppCompatActivity implements
 
         navigationView.setNavigationItemSelectedListener(this);
         updateNavHeader();
+        fab = findViewById(R.id.fab);
 
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                Intent intent = new Intent(MainActivity.this, JobPost.class);
+                startActivity(intent);
+            }
+        });
 
 
 
@@ -393,8 +402,8 @@ public class MainActivity extends AppCompatActivity implements
             fragment = new MyProfileFragment();
 
         }
-        if (id == R.id.nav_post_jobs){
-            fragment = new JobPostFragment();
+        if (id == R.id.nav_my_jobs){
+            fragment = new MyJobsFragment();
         }
         if (id == R.id.nav_logout){
             //TODO: fix these after the fragments have been added

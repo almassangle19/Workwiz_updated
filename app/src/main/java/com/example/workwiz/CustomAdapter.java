@@ -1,6 +1,7 @@
 package com.example.workwiz;
 
 import android.content.Context;
+import android.content.res.Resources;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,21 +14,30 @@ import com.example.workwiz.util.JobUtil;
 
 import java.util.ArrayList;
 
+import me.zhanghai.android.materialratingbar.MaterialRatingBar;
+
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
 
-    private ArrayList<Job> jobsArrayList;
     private Context mCtx;
+    private ArrayList<Job> jobsArrayList;
+    Resources resources;
 
-    public CustomAdapter(ArrayList<Job> jobsArrayList, Context mCtx) {
-        this.jobsArrayList = jobsArrayList;
+
+    public CustomAdapter(Context mCtx, ArrayList<Job> jobsArrayList) {
+
+
         this.mCtx = mCtx;
+        this.jobsArrayList = jobsArrayList;
+
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        View v = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_job , parent , false);
-        return new ViewHolder(v);
+        LayoutInflater inflater = LayoutInflater.from(mCtx);
+        View v = inflater.inflate(R.layout.item_job , null);
+        ViewHolder holder = new ViewHolder(v);
+        return holder;
     }
 
     @Override
@@ -38,8 +48,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.mCity.setText(job.getCity());
         holder.mCategory.setText(job.getCategory());
         holder.mPrice.setText(JobUtil.getPriceString(job));
-
+        holder.mAvgRating.setText(resources.getString(R.string.fmt_num_ratings,
+                job.getNumRatings()));
+        holder.ratingBar.setRating((float) job.getAvgRating());
     }
+
+
+
+
 
     @Override
     public int getItemCount() {
@@ -47,14 +63,20 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mName,mCity, mCategory, mPrice;
+        TextView mName,mCity, mCategory, mPrice, mAvgRating;
+        MaterialRatingBar ratingBar;
 
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
+
+            resources = itemView.getResources();
             mName = itemView.findViewById(R.id.job_item_name);
             mCity = itemView.findViewById(R.id.restaurant_item_city);
             mCategory = itemView.findViewById(R.id.job_item_category);
             mPrice = itemView.findViewById(R.id.job_item_salary);
+            mAvgRating = itemView.findViewById(R.id.restaurant_item_num_ratings);
+            ratingBar = itemView.findViewById(R.id.job_item_rating);
+
 
 
         }

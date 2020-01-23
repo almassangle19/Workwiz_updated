@@ -20,6 +20,7 @@
         <activity android:name=".Skills"></activity>
         <activity android:name=".MapActivity"/>
         <activity android:name=".JobDetail"/>
+        <activity android:name=".JobPost"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
