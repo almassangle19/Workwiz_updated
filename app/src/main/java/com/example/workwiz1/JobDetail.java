@@ -249,7 +249,7 @@ public  class JobDetail extends AppCompatActivity implements
                 .addOnFailureListener(this, new OnFailureListener() {
                     @Override
                     public void onFailure(@NonNull Exception e) {
-                        Log.w(TAG, "Add rating failed", e);
+                        Log.w(TAG, "Ad rating failed", e);
 
                         // Show failure message and hide keyboard
                         hideKeyboard();
@@ -274,7 +274,7 @@ public  class JobDetail extends AppCompatActivity implements
         current_user = mAuth.getCurrentUser();
         userid = current_user.getUid();
 
-        mUserRef.collection("Users").document(userid).collection("Applied to").document()
+        mFirestore.collection("Users").document(userid).collection("Applied to").document()
                 .set(restaurantId)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -293,7 +293,7 @@ public  class JobDetail extends AppCompatActivity implements
 
             }
         });
-        mJobRef.collection("Jobs").document(restaurantId).collection("Applications").document()
+        mFirestore.collection("Jobs").document(restaurantId).collection("Applications").document()
                 .set(userid)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override

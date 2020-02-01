@@ -48,6 +48,8 @@ import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.Query;
 
 import java.util.Collections;
+import java.util.HashMap;
+import java.util.Map;
 
 public class MainActivity extends AppCompatActivity implements
         NavigationView.OnNavigationItemSelectedListener, View.OnClickListener,
@@ -351,7 +353,10 @@ public class MainActivity extends AppCompatActivity implements
         startActivityForResult(intent, RC_SIGN_IN);
         mViewModel.setIsSigningIn(true);
         user= FirebaseAuth.getInstance().getCurrentUser();
-        documentReference.collection("Users").document(user.getUid()).set(user.getEmail());
+        Map<String,Object> data = new HashMap<>();
+        data.put("email",user.getEmail());
+        data.put("name",user.getDisplayName());
+       mFirestore.collection("Users").document(user.getUid()).set(data);
 
     }
 
