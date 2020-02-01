@@ -35,6 +35,16 @@
     <string name="drawer_close">Close</string>
     <string name="navigation_drawer_open">Open</string>
     <string name="navigation_drawer_close">Close</string>
+    <string name="hint_password">Password</string>
+    <string name="hint_gender">I am</string>
+    <string name="btn_sign_up">Sign Up !</string>
+    <string name="hint_dob">Enter D.O.B (MM/DD/YYYY)</string>
+    <string name="err_msg_name">Please enter a Name</string>
+    <string name="err_msg_dob">Enter a valid D.O.B</string>
+    <string name="err_msg_email">Enter a valid email.</string>
+    <string name="err_msg_required">Required !</string>
+    <string name="failed_to_create_directory">Failed to create directory</string>
+    <string name="picture_wasnt_taken">Picture was not taken!</string>
 
     <!-- Types of food I could think of in 5 minutes -->
     <string-array name="categories">

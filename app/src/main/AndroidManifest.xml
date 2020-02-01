@@ -1,7 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.example.workwiz">
+    package="com.example.workwiz1">
 
+    <uses-permission android:name="android.permission.VIBRATE" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -17,10 +18,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".Skills"></activity>
-        <activity android:name=".MapActivity"/>
-        <activity android:name=".JobDetail"/>
-        <activity android:name=".JobPost"/>
+        <activity android:name="com.example.workwiz1.Skills"></activity>
+        <activity android:name="com.example.workwiz1.MapActivity"/>
+        <activity android:name="com.example.workwiz1.JobDetail"/>
+        <activity android:name="com.example.workwiz1.JobPost"/>
+        <activity android:name="com.example.workwiz1.LoginForm"/>
+        <activity android:name="com.example.workwiz1.phone_auth_giver"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.example.workwiz1.location"
+            android:theme="@style/AppTheme.NoActionBar"/>
+        <activity android:name="com.example.workwiz1.OtpVerification"
+            android:theme="@style/AppTheme.NoActionBar"/>
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_map_api_key" />
@@ -31,7 +39,7 @@
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
-
+    <uses-permission android:name="android.permission.ACCESS_MEDIA_LOCATION"/>
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
 </manifest>

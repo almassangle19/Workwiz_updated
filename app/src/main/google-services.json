@@ -1,0 +1,48 @@
+{
+  "project_info": {
+    "project_number": "284244347762",
+    "firebase_url": "https://workwiz-db2dc.firebaseio.com",
+    "project_id": "workwiz-db2dc",
+    "storage_bucket": "workwiz-db2dc.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:284244347762:android:bd99e4b412322bac396beb",
+        "android_client_info": {
+          "package_name": "com.example.workwiz1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "284244347762-tu29f7ltbk8iqde4v7lbc4e2idmch9mi.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.example.workwiz1",
+            "certificate_hash": "820fabbefbd4a983c3c24a1aea2e67c5f3d630a5"
+          }
+        },
+        {
+          "client_id": "284244347762-qpuk54lvm23i008h9qt8hro5r90jrfbu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDjWkgLELbKST1eMJTxNQNt63-Wu6kRDeU"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "284244347762-qpuk54lvm23i008h9qt8hro5r90jrfbu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
