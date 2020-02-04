@@ -10,19 +10,38 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.example.workwiz1.adapter.JobAdapter;
 import com.example.workwiz1.util.JobUtil;
+import com.google.firebase.firestore.DocumentSnapshot;
+import com.google.firebase.firestore.Query;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import me.zhanghai.android.materialratingbar.MaterialRatingBar;
 
+
+
 public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder> {
+
 
     private Context mCtx;
     private List<com.example.workwiz1.Job> jobsArrayList;
     Resources resources;
 
+
+    public interface OnJobSelectedListener {
+
+        void onJobSelected(DocumentSnapshot restaurant);
+
+    }
+    private OnJobSelectedListener listener;
+   // private JobAdapter.OnRestaurantSelectedListener mListener;
+
+
+    public interface mClickListener {
+        public void  mClick(DocumentSnapshot snapshot);
+    }
 
     public CustomAdapter(Context mCtx, List<com.example.workwiz1.Job> jobsArrayList) {
 
@@ -36,7 +55,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         LayoutInflater inflater = LayoutInflater.from(mCtx);
-        View v = inflater.inflate(R.layout.item_job , null);
+        View v = inflater.inflate(R.layout.item_job, null);
         ViewHolder holder = new ViewHolder(v);
         return holder;
     }
@@ -52,10 +71,14 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
         holder.mAvgRating.setText(resources.getString(R.string.fmt_num_ratings,
                 job.getNumRatings()));
         holder.ratingBar.setRating((float) job.getAvgRating());
+
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+             d
+            }
+        });
     }
-
-
-
 
 
     @Override
@@ -64,7 +87,7 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
-        TextView mName,mCity, mCategory, mPrice, mAvgRating;
+        TextView mName, mCity, mCategory, mPrice, mAvgRating;
         MaterialRatingBar ratingBar;
 
         public ViewHolder(@NonNull View itemView) {
@@ -77,9 +100,8 @@ public class CustomAdapter extends RecyclerView.Adapter<CustomAdapter.ViewHolder
             mPrice = itemView.findViewById(R.id.job_item_salary);
             mAvgRating = itemView.findViewById(R.id.restaurant_item_num_ratings);
             ratingBar = itemView.findViewById(R.id.job_item_rating);
-
-
-
         }
-    }
+            }
+        }
+
 }

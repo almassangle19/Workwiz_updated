@@ -22,10 +22,14 @@ import java.util.Map;
 
 public class JobPost extends AppCompatActivity {
 
-    private EditText mName, mCity, mCategory, mPrice;
+    private EditText mName, mCity, mCategory, mPrice, mStartDate,mDeadline,mDescription;
     private Button mAddBtn;
     FirebaseUser user;
     private FirebaseFirestore db = FirebaseFirestore.getInstance();
+    public static final String KEY_JOB_ID = "key_job_id";
+    String restaurantId;
+    String documentId;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,9 +41,15 @@ public class JobPost extends AppCompatActivity {
         mName = findViewById(R.id.etname);
         mCity = findViewById(R.id.etcity);
         mCategory = findViewById(R.id.etcategory);
+        mStartDate = findViewById(R.id.etStartDate);
+        mDeadline = findViewById(R.id.etDeadline);
         mPrice = findViewById(R.id.etprice);
-
+        mDescription = findViewById(R.id.etDescription);
         user = FirebaseAuth.getInstance().getCurrentUser();
+//        restaurantId = getIntent().getExtras().getString(KEY_JOB_ID);
+     /*   if (restaurantId == null) {
+            throw new IllegalArgumentException("Must pass extra " + KEY_JOB_ID);
+        }*/
         mAddBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -65,7 +75,8 @@ public class JobPost extends AppCompatActivity {
         data1.put("numRating",0);
         data1.put("photo",null);
 
-        db.collection("Jobs").document("xyz")
+        documentId = db.collection("Jobs").document().getId();
+        db.collection("Jobs").document(documentId)
                 .set(data1)
                 .addOnSuccessListener(new OnSuccessListener<Void>() {
                     @Override
@@ -73,6 +84,8 @@ public class JobPost extends AppCompatActivity {
 
 
                         Toast.makeText(JobPost.this, "Posted", Toast.LENGTH_SHORT).show();
+                     /*   db.collection("Users").
+                                document(user.getUid()).collection("My Jobs").document(user.getUid());*/
 
 
                     }
@@ -84,6 +97,9 @@ public class JobPost extends AppCompatActivity {
 
             }
         });
+
+        db.collection("Users").document(user.getUid()).collection("My Jobs").document(documentId).set(data1);
+
 
     }
 }

@@ -31,7 +31,7 @@ public class RatingAdapter extends com.example.workwiz1.adapter.FirestoreAdapter
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        holder.bind(getSnapshot(position).toObject(Rating.class));
+        holder.bind(getSnapshot(position).toObject(com.example.workwiz1.Rating.class));
     }
 
     static class ViewHolder extends RecyclerView.ViewHolder {
@@ -47,7 +47,7 @@ public class RatingAdapter extends com.example.workwiz1.adapter.FirestoreAdapter
             textView = itemView.findViewById(R.id.rating_item_text);
         }
 
-        public void bind(Rating rating) {
+        public void bind(com.example.workwiz1.Rating rating) {
             nameView.setText(rating.getUserName());
             ratingBar.setRating((float) rating.getRating());
             textView.setText(rating.getText());
